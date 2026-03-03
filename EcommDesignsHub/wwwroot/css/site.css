@@ -1,0 +1,81 @@
+:root {
+    --brand-lime: #8cc63f;
+    --dark-bg: #0a0a0a;
+    --card-bg: #161616;
+    --text-muted: #b0b0b0;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif; /* Modern clean font */
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    border-bottom: 1px solid rgba(140, 198, 63, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+    .nav-link:hover, .nav-link.active {
+        color: var(--brand-lime) !important;
+    }
+
+.btn-theme {
+    background-color: #17cf79;
+    color: #000!important;
+    border: none;
+    box-shadow: 0 0 10px #17cf7933, 0 0 30px #17cf790d;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 19px;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+    .btn-theme:hover {
+        background-color: #a4d95a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(140, 198, 63, 0.4);
+    }
+
+/* Card Styling */
+.project-card {
+    background: var(--card-bg);
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+}
+
+    .project-card:hover {
+        border-color: var(--brand-lime);
+    }
+
+    .project-card img {
+        border-bottom: 1px solid #222;
+        object-fit: cover;
+        height: 200px;
+        width: 100%;
+    }
+
+/* Forms */
+.form-control {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+}
+
+    .form-control:focus {
+        background-color: #222;
+        border-color: var(--brand-lime);
+        box-shadow: 0 0 0 0.25rem rgba(140, 198, 63, 0.25);
+        color: white;
+    }
