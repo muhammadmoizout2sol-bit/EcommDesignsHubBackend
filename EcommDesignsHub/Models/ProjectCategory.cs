@@ -17,5 +17,7 @@ namespace EcommDesignsHub.Models
         public string? CreatedBy { get; set; }
 
         public bool? IsActive { get; set; } = true;
+        public ICollection<ProjectModel>? Projects { get; set; }
+
     }
 }

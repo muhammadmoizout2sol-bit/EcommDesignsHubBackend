@@ -1,5 +1,6 @@
 ﻿using EcommDesignsHub.Data;
 using EcommDesignsHub.Models;
+using EcommDesignsHub.Models.Dtos;
 using EcommDesignsHub.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,12 +19,23 @@ namespace EcommDesignsHub.Repositories.Implementations
         {
             return await _context.Projects.ToListAsync();
         }
-        public async Task<List<ProjectModel>> GetAllForSite()
+        public async Task<List<ProjectSiteDto>> GetAllForSite()
         {
-            return await _context.Projects.Where(x=>x.IsActive != false).ToListAsync();
+            return await _context.Projects
+                .Include(p => p.Category)
+                .Where(p => p.IsActive == true)
+                .Select(p => new ProjectSiteDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    CategoryId = p.CategoryId,
+                    CategoryName = p.Category.Name,
+                    Description = p.Description,
+                    ImgUrl = p.ImgUrl,
+                    ProjectUrl = p.ProjectUrl
+                })
+                .ToListAsync();
         }
-       
-
         public async Task<ProjectModel> GetById(int id)
         {
             return await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);

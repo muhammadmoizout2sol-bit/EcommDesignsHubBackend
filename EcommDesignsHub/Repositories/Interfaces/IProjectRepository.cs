@@ -1,11 +1,12 @@
 ﻿using EcommDesignsHub.Models;
+using EcommDesignsHub.Models.Dtos;
 
 namespace EcommDesignsHub.Repositories.Interfaces
 {
     public interface IProjectRepository
     {
         Task<IEnumerable<ProjectModel>> GetAll();
-        Task<List<ProjectModel>> GetAllForSite();
+        Task<List<ProjectSiteDto>> GetAllForSite();
         Task<ProjectModel> GetById(int id);
         Task Add(ProjectModel model);
         Task Update(ProjectModel model);

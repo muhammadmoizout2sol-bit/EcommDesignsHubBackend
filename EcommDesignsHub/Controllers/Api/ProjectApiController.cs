@@ -18,14 +18,10 @@ namespace EcommDesignsHub.Controllers.Api
             _repo = repo;
             _env = env;
         }
-        [HttpGet]
+        [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
             var projects = await _repo.GetAllForSite();
-
-            if (projects == null || !projects.Any())
-                return NotFound("No projects found");
-
             return Ok(projects);
         }
         [HttpGet("GetCategory")]
@@ -33,9 +29,7 @@ namespace EcommDesignsHub.Controllers.Api
         {
             var categories = await _repo.GetAllCategoryForSite();
 
-            if (categories == null || !categories.Any())
-                return NotFound("No projects found");
-
+            
             return Ok(categories);
         }
     }
