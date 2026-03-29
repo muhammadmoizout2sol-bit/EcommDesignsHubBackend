@@ -27,6 +27,12 @@ namespace EcommDesignsHub.Controllers
 
             if (dto.Resume != null)
             {
+                const long maxBytes = 3 * 1024 * 1024;
+                if (dto.Resume.Length > maxBytes)
+                {
+                    return BadRequest("File size must be 3MB or less.");
+                }
+
                 string folder = Path.Combine(_env.WebRootPath, "uploads");
                 Directory.CreateDirectory(folder);
 
@@ -38,7 +44,7 @@ namespace EcommDesignsHub.Controllers
                     await dto.Resume.CopyToAsync(stream);
                 }
 
-                 filePath =  "/uploads/" + fileName;
+                filePath = "/uploads/" + fileName;
             }
 
             var app = new Application
