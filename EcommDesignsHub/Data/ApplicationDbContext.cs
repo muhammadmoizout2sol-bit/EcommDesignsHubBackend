@@ -11,6 +11,8 @@ namespace EcommDesignsHub.Data
         }
         public DbSet<Models.ProjectModel> Projects { get; set; }
         public DbSet<Models.ProjectCategory> Categories { get; set; }
+        public DbSet<Models.Job> Jobs{ get; set; }
+        public DbSet<Models.Application> Applications { get; set; }
 
     }
 
