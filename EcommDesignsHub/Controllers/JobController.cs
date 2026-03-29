@@ -13,6 +13,9 @@ namespace EcommDesignsHub.Controllers
             _context = context;
         }
 
+
+
+
         public IActionResult Index()
         {
             var jobs = _context.Jobs.ToList();
@@ -70,6 +73,25 @@ namespace EcommDesignsHub.Controllers
             };
 
             return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateApplicationStatus(int applicationId, int jobId, string status)
+        {
+            var application = _context.Applications.Find(applicationId);
+            if (application == null) return NotFound();
+
+            status = (status ?? "").Trim();
+            if (string.IsNullOrEmpty(status))
+                return BadRequest("Status is required.");
+
+            application.Status = status;
+            _context.SaveChanges();
+
+            TempData["success"] = "Application status updated to " + status + ".";
+
+            return RedirectToAction("Applicants", new { id = jobId });
         }
     }
 }

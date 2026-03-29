@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommDesignsHub.Controllers
 {
-    [ApiController]
+    
     [Route("api/applications")]
     public class ApplicationController : ControllerBase
     {
@@ -17,10 +17,12 @@ namespace EcommDesignsHub.Controllers
             _context = context;
             _env = env;
         }
-
+        
         [HttpPost]
+        [Route("Apply")]
         public async Task<IActionResult> Apply([FromForm] ApplicationDTO dto)
         {
+
             var filePath = "/uploads/";
 
             if (dto.Resume != null)
@@ -44,6 +46,7 @@ namespace EcommDesignsHub.Controllers
                 FullName = dto.FullName,
                 Email = dto.Email,
                 Phone = dto.Phone,
+                ExperienceYears = dto.ExperienceYears,
                 ResumePath = filePath,
                 JobId = dto.JobId
             };
@@ -52,6 +55,27 @@ namespace EcommDesignsHub.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(app);
+        }
+
+        [HttpPost]
+        [Route("UpdateStatus")]
+        public async Task<IActionResult> UpdateStatus(int applicationId, string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+            {
+                return BadRequest("Status is required.");
+            }
+
+            var application = await _context.Applications.FindAsync(applicationId);
+            if (application == null)
+            {
+                return NotFound();
+            }
+
+            application.Status = status.Trim();
+            _context.Applications.Update(application);
+            await _context.SaveChangesAsync();
+            return Ok(application);
         }
     }
 }

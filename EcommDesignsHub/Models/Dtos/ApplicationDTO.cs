@@ -2,7 +2,7 @@
 {
     public class ApplicationDTO
     {
-        public int ApplicationId { get; set; }
+        
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -14,6 +14,6 @@
         public string Status { get; set; } = "Pending";
 
         public int JobId { get; set; }
-        public Job Job { get; set; }
+        
     }
 }

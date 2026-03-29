@@ -26,6 +26,7 @@ else
                     <th>Status</th>
                     <th>Applied Date</th>
                     <th>Resume</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +48,26 @@ else
                             {
                                 <span class="text-muted">None</span>
                             }
+                        </td>
+                        <td class="text-nowrap">
+                            <form asp-action="UpdateApplicationStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                                <input type="hidden" name="jobId" value="@Model.Job.JobId" />
+                                <button type="submit" name="status" value="Accepted" class="btn btn-sm btn-success me-1">Accept</button>
+                            </form>
+                            <form asp-action="UpdateApplicationStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                                <input type="hidden" name="jobId" value="@Model.Job.JobId" />
+                                <button type="submit" name="status" value="Rejected" class="btn btn-sm btn-danger me-1">Reject</button>
+                            </form>
+                            @* <form asp-action="UpdateApplicationStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                                <input type="hidden" name="jobId" value="@Model.Job.JobId" />
+                                <button type="submit" name="status" value="Pending" class="btn btn-sm btn-secondary">Pending</button>
+                            </form> *@
                         </td>
                     </tr>
                 }
