@@ -53,6 +53,8 @@ namespace EcommDesignsHub.Controllers
                 Email = dto.Email,
                 Phone = dto.Phone,
                 ExperienceYears = dto.ExperienceYears,
+                CoverLetter = dto.CoverLetter,
+                AppliedDate = DateTime.UtcNow,
                 ResumePath = filePath,
                 JobId = dto.JobId
             };

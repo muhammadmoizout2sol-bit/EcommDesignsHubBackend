@@ -1,6 +1,7 @@
 ﻿using EcommDesignsHub.Data;
 using EcommDesignsHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace EcommDesignsHub.Controllers
 {
@@ -75,6 +76,25 @@ namespace EcommDesignsHub.Controllers
             return View(vm);
         }
 
+        public IActionResult ApprovedApplicants(int id)
+        {
+            var job = _context.Jobs.Find(id);
+            if (job == null) return NotFound();
+
+            var applicants = _context.Applications
+                .Where(a => a.JobId == id && a.Status == "Accepted")
+                .OrderByDescending(a => a.AppliedDate)
+                .ToList();
+
+            var vm = new Models.ViewModel.JobApplicantsViewModel
+            {
+                Job = job,
+                Applications = applicants
+            };
+
+            return View(vm);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UpdateApplicationStatus(int applicationId, int jobId, string status)
@@ -93,5 +113,65 @@ namespace EcommDesignsHub.Controllers
 
             return RedirectToAction("Applicants", new { id = jobId });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteApplication(int applicationId, int jobId)
+        {
+            var application = _context.Applications.Find(applicationId);
+            if (application == null) return NotFound();
+
+            // Delete resume file if it exists
+            if (!string.IsNullOrEmpty(application.ResumePath))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", application.ResumePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            // Delete application from database
+            _context.Applications.Remove(application);
+            _context.SaveChanges();
+
+            TempData["success"] = "Application deleted successfully.";
+
+            return RedirectToAction("Applicants", new { id = jobId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteJob(int id)
+        {
+            var job = _context.Jobs.Find(id);
+            if (job == null) return NotFound();
+
+            // Get all applications for this job
+            var applications = _context.Applications.Where(a => a.JobId == id).ToList();
+
+            // Delete resume files and applications
+            foreach (var app in applications)
+            {
+                if (!string.IsNullOrEmpty(app.ResumePath))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", app.ResumePath.TrimStart('/'));
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+                _context.Applications.Remove(app);
+            }
+
+            // Delete the job
+            _context.Jobs.Remove(job);
+            _context.SaveChanges();
+
+            TempData["success"] = "Job deleted successfully along with all associated applications.";
+
+            return RedirectToAction("Index");
+        }
     }
 }
+
